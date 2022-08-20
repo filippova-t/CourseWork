@@ -1,72 +1,194 @@
-import java.util.Arrays;
 
 public class Main {
+    private static Employee[] listOfEmployees = new Employee[10];
 
-    public static void printListOfEmployees (Employee [] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            System.out.println(arr[i] + ";");
+    public static void printListOfEmployees () {
+        for (int i = 0; i < listOfEmployees.length; i++) {
+            if (i == listOfEmployees.length - 1) {
+                System.out.println(listOfEmployees[i] + ".");
+            } else
+            System.out.println(listOfEmployees[i] + ";");
         }
     }
-    public static int calculateSumOfSalaryPerMonth (Employee[] employees) {
-        int [] arr1 = new int [employees.length];
+    public static int calculateSumOfSalaryPerMonth () {
+        int [] salaries = new int [listOfEmployees.length];
         int sum = 0;
-        for (int i = 0; i < arr1.length; i++) {
-            arr1 [i] = employees[i].getSalary();
-            sum = sum + arr1 [i];
+        for (int i = 0; i < salaries.length; i++) {
+            salaries [i] = listOfEmployees[i].getSalary();
+            sum = sum + salaries [i];
         }
         return sum;
     }
-    //минимальное значение нашла одним способом (через foreach), максимальное - другим, с помощью сортировки массива.
-    //Хотя оба значения можно было найти каким-либо одним из этих способов. Минус использования foreach - "магические
-    // числа" при объявлении maxSalary и особенно minSalary
-    public static int findMinimumSalary (Employee[] employees) {
-        int minSalary = 2_000_000_000;
-        for (final Employee current: employees) {
-            if (current.getSalary() < minSalary) {
-                minSalary = current.getSalary();
-            }
-        }
-            return minSalary;
-        }
 
-        public static String findEmployeeWithMinimumSalary (Employee[] employees) {
-        String name = "ФИО";
-            for (int i = 0; i < employees.length; i++) {
-                if (employees[i].getSalary() == findMinimumSalary(employees)) {
-                    name = employees[i].getEmployeesName();
+
+        public static String findEmployeeWithMinimumSalary () {
+            int minSalary = listOfEmployees[0].getSalary();
+            String name = null;
+            for (final Employee current : listOfEmployees) {
+                if (current.getSalary() < minSalary) {
+                    minSalary = current.getSalary();
+                }
+            }
+            for (int i = 0; i < listOfEmployees.length; i++) {
+                if (listOfEmployees[i].getSalary() == minSalary) {
+                    name = listOfEmployees[i].getEmployeesName();
                 }
             } return name;
         }
-    public static int findMaximumSalary (Employee[] employees) {
-        int maxSalary = -1;
-        int [] arr3 = new int [employees.length];
-        for (int i = 0; i < employees.length; i++) {
-           arr3[i] = employees[i].getSalary();
-           if (i == arr3.length - 1) {
-               Arrays.sort(arr3);
-               maxSalary = arr3[arr3.length - 1];
-           }
-        }
-        return maxSalary;
-    }
-    public static String findEmployeeWithMaximumSalary (Employee[] employees) {
-        String name = "ФИО";
-        for (int i = 0; i < employees.length; i++) {
-            if (employees[i].getSalary() == findMaximumSalary(employees)) {
-                name = employees[i].getEmployeesName();
+
+
+    public static String findEmployeeWithMaximumSalary () {
+        int maxSalary = listOfEmployees[0].getSalary();
+        String name = null;
+        for (final Employee current: listOfEmployees) {
+            if (current.getSalary() > maxSalary) {
+                maxSalary = current.getSalary();
             }
+        }
+        for (int i = 0; i < listOfEmployees.length; i++) {
+            if (listOfEmployees[i].getSalary() == maxSalary) {
+                name = listOfEmployees[i].getEmployeesName();
+            }
+
         } return name;
     }
-    public static void printNamesOfEmployees (Employee [] arr2) {
-        for (int i = 0; i < arr2.length; i++) {
-            System.out.println(arr2[i].getEmployeesName() + ";");
+    public static void printNamesOfEmployees () {
+        for (int i = 0; i < listOfEmployees.length; i++) {
+            if (i == listOfEmployees.length - 1) {
+                System.out.println(listOfEmployees[i].getEmployeesName() + ".");
+            } else
+            System.out.println(listOfEmployees[i].getEmployeesName() + ";");
         }
     }
 
 
+    public static void increaseSalary (int percent) {
+        for (int i = 0; i < listOfEmployees.length; i++) {
+            listOfEmployees[i].setSalary(listOfEmployees[i].getSalary() * (100 + percent) / 100);
+
+        }
+    }
+
+    public static String findEmployeeWithMinimalSalaryInDepartment (int department) {
+        int numberOfEmployeesInDepartment = 0;
+        for (int i = 0; i <listOfEmployees.length; i++) {
+            if (listOfEmployees[i].getDepartmentName() == department) {
+                ++numberOfEmployeesInDepartment;
+            }
+        }
+        Employee [] employeesInDepartment = new Employee[numberOfEmployeesInDepartment];
+        int counter = 0;
+        for (int i = 0; i < listOfEmployees.length; i++) {
+            if (listOfEmployees[i].getDepartmentName() == department) {
+                employeesInDepartment [counter] = listOfEmployees[i];
+                counter++;
+            }
+        }
+        int minSalary = employeesInDepartment[0].getSalary();
+        String name = null;
+        for (final Employee current : employeesInDepartment)  {
+                if (current.getSalary() < minSalary) {
+                    minSalary = current.getSalary();
+                }
+            }
+        for (int i = 0; i < employeesInDepartment.length; i++) {
+            if (employeesInDepartment[i].getSalary() == minSalary) {
+                name = employeesInDepartment[i].getEmployeesName();
+                }
+            }
+        return name;
+    }
+
+    public static String findEmployeeWithMaximalSalaryInDepartment (int department) {
+        int numberOfEmployeesInDepartment = 0;
+        for (int i = 0; i <listOfEmployees.length; i++) {
+            if (listOfEmployees[i].getDepartmentName() == department) {
+                ++numberOfEmployeesInDepartment;
+            }
+        }
+        Employee [] employeesInDepartment = new Employee[numberOfEmployeesInDepartment];
+        int counter = 0;
+        for (int i = 0; i < listOfEmployees.length; i++) {
+            if (listOfEmployees[i].getDepartmentName() == department) {
+                employeesInDepartment [counter] = listOfEmployees[i];
+                counter++;
+            }
+        }
+        int maxSalary = employeesInDepartment[0].getSalary();
+        String name = null;
+        for (final Employee current : employeesInDepartment)  {
+            if (current.getSalary() > maxSalary) {
+                maxSalary = current.getSalary();
+            }
+        }
+        for (int i = 0; i < employeesInDepartment.length; i++) {
+            if (employeesInDepartment[i].getSalary() == maxSalary) {
+                name = employeesInDepartment[i].getEmployeesName();
+            }
+        }
+        return name;
+    }
+
+
+    public static int calculateSumSalaryInDepartment (int department) {
+        int sum = 0;
+        for (int i = 0; i < listOfEmployees.length; i++) {
+            if (listOfEmployees[i].getDepartmentName() == department) {
+                sum = sum + listOfEmployees[i].getSalary();
+
+            }
+        } return sum;
+    }
+    public static double calculateAverageSalaryInDepartment (int department) {
+        double averageSalary = 0;
+        int numberOfEmployeesInDepartment = 0;
+        for (int i = 0; i < listOfEmployees.length; i++) {
+            if (listOfEmployees[i].getDepartmentName() == department) {
+                numberOfEmployeesInDepartment++;
+                averageSalary = calculateSumSalaryInDepartment(department)/ (double) numberOfEmployeesInDepartment;
+            }
+
+        }
+        return averageSalary;
+    }
+
+    public static void increaseSalaryInDepartment (int department, int percent) {
+        for (int i = 0; i < listOfEmployees.length; i++) {
+            if (listOfEmployees[i].getDepartmentName() == department) {
+                listOfEmployees[i].setSalary(listOfEmployees[i].getSalary() * (100 + percent) / 100);
+            }
+        }
+    }
+
+    public static void printNamesOfEmployeesInDepartment (int department) {
+        for (int i = 0; i < listOfEmployees.length; i++) {
+            if (listOfEmployees[i].getDepartmentName() == department) {
+                System.out.println(listOfEmployees[i].getEmployeesName() + "; зарплата: " +
+                        listOfEmployees[i].getSalary() + " руб.");
+            }
+        }
+    }
+    public static void printEmployeesWithSalaryLessThanNumber (int number) {
+        System.out.println("Сотрудники с зарплатой меньше, чем " + number + " руб: ");
+        for (int i = 0; i < listOfEmployees.length; i++) {
+            if (listOfEmployees[i].getSalary() < number) {
+                System.out.println("id: " + listOfEmployees[i].getId() + ". " + listOfEmployees[i].getEmployeesName() +
+                        "; зарплата: " + listOfEmployees[i].getSalary() + " руб.");
+            }
+        }
+    }
+
+    public static void printEmployeesWithSalaryBiggerOrEqualThanNumber (int number) {
+        System.out.println("Сотрудники с зарплатой больше или равной " + number + " руб: ");
+        for (int i = 0; i < listOfEmployees.length; i++) {
+            if (listOfEmployees[i].getSalary() >= number) {
+                System.out.println("id: " + listOfEmployees[i].getId() + ". " + listOfEmployees[i].getEmployeesName() +
+                        "; зарплата: " + listOfEmployees[i].getSalary() + " руб.");
+            }
+        }
+    }
 
         public static void main (String[]args) {
-            Employee[] listOfEmployees = new Employee[10];
             listOfEmployees[0] = new Employee("Иванов Иван Иванович", 1, 50000);
             listOfEmployees[1] = new Employee("Петров Петр Петрович", 1, 60000);
             listOfEmployees[2] = new Employee("Семенов Семен Семенович", 2, 70000);
@@ -79,23 +201,33 @@ public class Main {
             listOfEmployees[9] = new Employee("Журавлева Ирина Антоновна", 5, 85000);
 
             System.out.println("8. a)");
-            printListOfEmployees(listOfEmployees);
+            printListOfEmployees();
+            System.out.println("8. b) Сумма затрат на зарплаты в месяц: " + calculateSumOfSalaryPerMonth() + " руб.");
+            System.out.println("8. c) ФИО сотрудника с минимальной зарплатой: " + findEmployeeWithMinimumSalary());
+            System.out.println("8. d) ФИО сотрудника с максимальной зарплатой: " + findEmployeeWithMaximumSalary());
+            System.out.println("8. e) Среднее значение зарплат: " + String.format("%.2f",
+                    (calculateSumOfSalaryPerMonth()/(double)listOfEmployees.length)) + " руб.");
+            System.out.println("8. f)");
+            printNamesOfEmployees();
+            System.out.println("проверка счетчика: " + listOfEmployees[listOfEmployees.length - 1].getId());
+            System.out.println();
 
-            System.out.println("b) Сумма затрат на зарплаты в месяц: " + calculateSumOfSalaryPerMonth(listOfEmployees) + " руб.");
+            increaseSalary(10);
+            System.out.println("Список сотрудников после индексации зарплаты:");
+            printListOfEmployees();
+            System.out.println("2.a) Сотрудник с минимальной зарплатой в отделе 1: " + findEmployeeWithMinimalSalaryInDepartment(1));
+            System.out.println("2.b) Сотрудник с максимальной зарплатой в отделе 2: " + findEmployeeWithMaximalSalaryInDepartment(2));
+            System.out.println("2.c) Сумма затрат на зарплаты в месяц по отделу 3: " + calculateSumSalaryInDepartment(3) + " руб.");
+            System.out.println("2.d) Средняя зарплата по отделу 4 равна " +
+                    String.format("%.2f", calculateAverageSalaryInDepartment(4)) + " руб. в месяц");
 
-            System.out.println("c) ФИО сотрудника с минимальной зарплатой: " + findEmployeeWithMinimumSalary(listOfEmployees));
-            System.out.println("d) ФИО сотрудника с максимальной зарплатой: " + findEmployeeWithMaximumSalary(listOfEmployees));
-
-            System.out.println("e) Среднее значение зарплат: " + String.format("%.2f",
-                    (double)(calculateSumOfSalaryPerMonth(listOfEmployees)/ listOfEmployees.length)) + " руб.");
-            System.out.println("f)");
-            printNamesOfEmployees(listOfEmployees);
-
-            //проверка счетчика
-            System.out.println(listOfEmployees[listOfEmployees.length - 1].getId());
-
-
-
+            increaseSalaryInDepartment(5, 20);
+            System.out.println("2.f) ");
+            printNamesOfEmployeesInDepartment(5);
+            System.out.println("3.a) ");
+            printEmployeesWithSalaryLessThanNumber(71500);
+            System.out.println("3.b) ");
+            printEmployeesWithSalaryBiggerOrEqualThanNumber(71500);
 
 
         }

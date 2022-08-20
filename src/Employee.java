@@ -9,12 +9,12 @@ public class Employee {
         this.employeesName = employeesName;
         this.departmentName = departmentName;
         this.salary = salary;
-        this.id = employeeCounter++;
+        this.id = ++employeeCounter;
     }
 
 
 
-    //getters
+
     public String getEmployeesName () {
         return this.employeesName;
     }
@@ -27,7 +27,8 @@ public class Employee {
     public int getId () {
         return this.id;
     }
-    //setters
+
+
     public void setDepartmentName (int departmentName) {
         this.departmentName = departmentName;
     }
